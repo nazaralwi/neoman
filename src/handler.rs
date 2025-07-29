@@ -21,7 +21,12 @@ pub async fn handle_key_events(key_event: KeyEvent, app: &mut App) -> AppResult<
         }
 
         KeyCode::Esc | KeyCode::Char('q') => {
-            if !app.urlbar.method_menu.is_open() {
+            // Quit app when no menu is opened
+            if app.urlbar.method_menu.highlight().is_some() {
+                while app.urlbar.method_menu.highlight().is_some() {
+                    app.urlbar.method_menu.pop();
+                }
+            } else {
                 app.quit();
             }
         }
